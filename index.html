@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngô Nguyễn Đức Hiếu - Portfolio Cá Nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        electric: '#7DF9FF',
+                        neonpink: '#FF6EC7',
+                        lime: '#CCFF00',
+                        violet: '#8A2BE2',
+                        sunshine: '#FFDE59'
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FF6EC7, #8A2BE2, #7DF9FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0.7;
+            z-index: -1;
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px) rotate(0.5deg) scale(1.01);
+            box-shadow: 0 15px 25px -8px rgba(0, 0, 0, 0.1), 0 6px 10px -8px rgba(0, 0, 0, 0.08);
+        }
+        @keyframes confetti-fall {
+            0% { top: -10%; transform: rotate(0deg); opacity: 0.8; }
+            100% { top: 110%; transform: rotate(360deg); opacity: 0.1;}
+        }
+        .animate-confetti {
+            animation: confetti-fall linear forwards;
+        }
+        .personal-style-tag {
+            transition: all 0.3s ease;
+        }
+        .personal-style-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.7s ease-out forwards;
+            opacity: 0;
+        }
+        /* Nav border */
+         nav.rainbow-border-nav {
+            border-bottom-width: 4px;
+            border-style: solid;
+            border-image: linear-gradient(45deg, #7DF9FF, #CCFF00, #FF6EC7, #8A2BE2) 1;
+            border-image-slice: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-top-color: transparent;
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+        /* Even Lighter, faded gradient border effect using ::before */
+        #about-section > div.main-content-block::before,
+        #contact > div.main-content-block::before {
+            content: "";
+            position: absolute;
+            top: -4px; left: -4px; right: -4px; bottom: -4px;
+            border-radius: 28px;
+            /* Gradient using RGBA with lower alpha (0.4) */
+            background: linear-gradient(45deg,
+                rgba(125, 249, 255, 0.4), /* electric even lighter */
+                rgba(204, 255, 0, 0.4),   /* lime even lighter */
+                rgba(255, 110, 199, 0.4), /* neonpink even lighter */
+                rgba(138, 43, 226, 0.4)   /* violet even lighter */
+            );
+            z-index: -1;
+        }
+        #mobile-menu {
+             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+             max-height: 0;
+             overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 font-sans antialiased overflow-x-hidden">
+    <div id="confetti-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></div>
+
+    <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 rainbow-border-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-3xl font-bold gradient-text">Hiếu</a>
+                </div>
+                <div class="hidden md:block">
+                     <div class="ml-10 flex items-center space-x-6">
+                        <a href="#about-section" class="nav-link px-4 py-2 rounded-full text-sm font-medium text-gray-600 transition-all hover:bg-electric/10 hover:text-electric">Giới thiệu</a>
+                        <a href="#social" class="nav-link px-4 py-2 rounded-full text-sm font-medium text-gray-600 transition-all hover:bg-lime/10 hover:text-lime-600">Mạng xã hội</a>
+                        <a href="#contact" class="nav-link px-4 py-2 rounded-full text-sm font-medium text-gray-600 transition-all hover:bg-sunshine/10 hover:text-yellow-600">Liên hệ</a>
+                        <a href="#style" class="nav-link px-4 py-2 rounded-full text-sm font-medium text-gray-600 transition-all hover:bg-violet/10 hover:text-violet">Phong cách</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" aria-expanded="false" aria-controls="mobile-menu" class="text-gray-900 hover:text-neonpink focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="bg-white/95 backdrop-blur-md shadow-lg absolute w-full border-t border-gray-100 opacity-0">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about-section" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Giới thiệu</a>
+                <a href="#social" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Mạng xã hội</a>
+                <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Liên hệ</a>
+                <a href="#style" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Phong cách</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="about" class="pt-32 pb-16 md:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-neonpink/10 blur-3xl animate-spin-slow"></div>
+        <div class="absolute -bottom-20 -left-20 w-72 h-72 rounded-full bg-electric/10 blur-3xl animate-spin-slow animation-delay-4000"></div>
+        <div class="flex flex-col md:flex-row items-center relative z-10">
+             <div class="md:w-1/2 mb-10 md:mb-0 text-center md:text-left">
+                <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+                    Xin chào!<br>
+                    Tôi là <span class="gradient-text">Ngô Nguyễn Đức Hiếu</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-600 mb-8 max-w-lg mx-auto md:mx-0">
+                    Là một Gen Z, đam mê âm nhạc và máy tính. Luôn tìm cách kết hợp giữa sở thích cá nhân và công nghệ để khám phá những điều mới mẻ và cũng rất thích đi khám phá mọi cung đường, tìm hiểu những nơi mới.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
+                    <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-neonpink to-violet text-white rounded-full font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                        <i class="fas fa-paper-plane mr-2"></i> Liên hệ ngay
+                    </a>
+                    <a href="#social" class="px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-full font-bold bg-white hover:bg-gray-50 transition-all transform hover:scale-105">
+                        <i class="fas fa-share-alt mr-2"></i> Mạng xã hội
+                    </a>
+                </div>
+            </div>
+             <div class="md:w-1/2 flex justify-center relative mt-10 md:mt-0">
+                 <div class="relative animate-float">
+                    <div class="w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 rounded-full bg-gradient-to-br from-electric/10 via-neonpink/10 to-violet/10 overflow-hidden border-8 border-white shadow-2xl backdrop-blur-sm">
+                         <img src="https://i.imgur.com/HF4xcGM.jpeg" alt="Ngô Nguyễn Đức Hiếu" class="w-full h-full object-cover">
+                    </div>
+                     <div class="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-white p-3 sm:p-4 rounded-full shadow-lg animate-float" style="animation-delay: 0.5s;">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-sunshine to-lime flex items-center justify-center">
+                            <i class="fas fa-magic text-white text-lg sm:text-xl"></i>
+                        </div>
+                    </div>
+                     <div class="absolute -top-4 -right-4 sm:-top-5 sm:-right-5 bg-white p-3 sm:p-4 rounded-full shadow-lg animate-float" style="animation-delay: 1.0s;">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-violet to-electric flex items-center justify-center">
+                            <i class="fas fa-rocket text-white text-lg sm:text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-section" class="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="relative main-content-block bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-2/5 p-6 md:p-10 bg-gradient-to-br from-electric/5 to-violet/5 flex flex-col justify-center">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                        Giới thiệu <span class="gradient-text">bản thân</span>
+                    </h2>
+                    <div class="w-20 md:w-24 h-2 bg-gradient-to-r from-neonpink to-violet mb-8 rounded-full"></div>
+                    <p class="text-base md:text-lg text-gray-600 mb-8">
+                        Là 1 người con của Lâm Đồng, sinh năm 2007 cung Xử Nữ, có nhiều đam mê.
+                    </p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-neonpink mb-1">1+</div>
+                            <div class="text-gray-600 text-sm">Năm kinh nghiệm</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-violet mb-1">1+</div>
+                            <div class="text-gray-600 text-sm">Dự án hoàn thành</div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-electric mb-1">∞</div>
+                            <div class="text-gray-600 text-sm">Đam mê học hỏi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-3/5 p-6 md:p-10">
+                    <h3 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6">Kỹ năng & Sở thích</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8 md:mb-10">
+                         <div class="bg-gray-50 p-6 rounded-xl card-hover border border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-neonpink to-violet flex items-center justify-center mb-4 shadow-md">
+                                <i class="fas fa-music text-white text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">Producer</h4>
+                            <p class="text-gray-600 text-sm">
+                                Thành thạo ứng dụng làm nhạc, nhưng chỉ làm nhạc cho vui.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl card-hover border border-gray-100">
+                             <div class="w-12 h-12 rounded-full bg-gradient-to-r from-electric to-lime flex items-center justify-center mb-4 shadow-md">
+                                <i class="fas fa-compass text-white text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">Khám phá</h4>
+                            <p class="text-gray-600 text-sm">
+                                Thích đi trải nghiệm thực tế và được đi đây đi đó.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl card-hover border border-gray-100">
+                             <div class="w-12 h-12 rounded-full bg-gradient-to-r from-sunshine to-neonpink flex items-center justify-center mb-4 shadow-md">
+                                <i class="fas fa-gamepad text-white"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">Trò chơi</h4>
+                            <p class="text-gray-600 text-sm">
+                                Đam mê chơi game, yêu thích các tựa game chiến thuật và thể thao điện tử. Nhất là Valorant.
+                            </p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl card-hover border border-gray-100">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-violet to-electric flex items-center justify-center mb-4 shadow-md">
+                                <i class="fas fa-camera text-white text-xl"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">Nhiếp ảnh</h4>
+                            <p class="text-gray-600 text-sm">
+                                Đam mê chụp ảnh, đặc biệt là phong cảnh và kiến trúc. Luôn tìm kiếm góc chụp độc đáo.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-electric/10 to-neonpink/10 p-6 rounded-xl border border-violet/20">
+                        <p class="text-sm md:text-base text-gray-700 italic">
+                            "Cách duy nhất để làm tốt công việc là yêu thích những gì bạn làm."
+                            <span class="block font-medium text-right text-neonpink mt-2">— Steve Jobs</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="social" class="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+         <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Mạng xã hội <span class="gradient-text">của tôi</span></h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                Kết nối với tôi qua các nền tảng mạng xã hội để cập nhật những thông tin mới nhất.
+            </p>
+            <div class="w-20 md:w-24 h-2 bg-gradient-to-r from-neonpink to-violet mx-auto mt-6 rounded-full"></div>
+        </div>
+         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-blue-500/10 to-blue-700/10 flex items-center justify-center relative">
+                    <i class="fab fa-facebook text-6xl text-gradient bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent"></i>
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-blue-500 shadow-sm">FACEBOOK</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Facebook</h3>
+                    <p class="text-gray-600 text-sm mb-4">Nơi chia sẻ khoảnh khắc đời thường, suy nghĩ cá nhân.</p>
+                    <a href="https://www.facebook.com/imhieu207" target="_blank" class="inline-block px-5 py-2 bg-blue-500 text-white rounded-full font-medium text-sm hover:bg-blue-600 transition-colors">
+                        <i class="fab fa-facebook-f mr-1"></i> Kết nối
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-cyan-400/10 to-pink-500/10 flex items-center justify-center relative">
+                     <i class="fab fa-tiktok text-6xl text-gradient bg-gradient-to-r from-[#00f2ea] to-[#ff0050] bg-clip-text text-transparent"></i>
+                     <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-black shadow-sm">TIKTOK</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">TikTok</h3>
+                    <p class="text-gray-600 text-sm mb-4">Video ngắn thú vị, sáng tạo và đầy năng lượng!</p>
+                    <a href="https://www.tiktok.com/@hg.1019532" target="_blank" class="inline-block px-5 py-2 bg-black text-white rounded-full font-medium text-sm hover:bg-gray-800 transition-colors">
+                         <i class="fab fa-tiktok mr-1"></i> Theo dõi
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-red-500/10 to-red-700/10 flex items-center justify-center relative">
+                    <i class="fab fa-youtube text-6xl text-gradient bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent"></i>
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-red-500 shadow-sm">YOUTUBE</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">YouTube</h3>
+                    <p class="text-gray-600 text-sm mb-4">Video giải trí, vlog và nhiều nội dung thú vị khác.</p>
+                    <a href="https://www.youtube.com/@ngonguyenduchieu" target="_blank" class="inline-block px-5 py-2 bg-red-600 text-white rounded-full font-medium text-sm hover:bg-red-700 transition-colors">
+                        <i class="fab fa-youtube mr-1"></i> Đăng ký
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-blue-400/10 to-blue-600/10 flex items-center justify-center relative">
+                     <i class="fab fa-facebook-messenger text-6xl text-gradient bg-gradient-to-r from-[#0068FF] to-[#0054C8] bg-clip-text text-transparent"></i>
+                     <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-[#0068FF] shadow-sm">ZALO</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Zalo</h3>
+                    <p class="text-gray-600 text-sm mb-4">Kết nối bạn bè, gia đình qua tin nhắn, chia sẻ khoảnh khắc.</p>
+                     <a href="https://i.imgur.com/3y79cnD.png" target="_blank" class="inline-block px-5 py-2 bg-[#0068FF] text-white rounded-full font-medium text-sm hover:bg-[#0054C8] transition-colors">
+                        <i class="fas fa-user-plus mr-1"></i> Kết bạn
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-gray-800/10 to-black/10 flex items-center justify-center relative">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Threads_%28app%29_logo.svg/1024px-Threads_%28app%29_logo.svg.png" alt="Threads Logo" class="w-14 h-14 object-contain">
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-black shadow-sm">THREADS</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Threads</h3>
+                    <p class="text-gray-600 text-sm mb-4">Chia sẻ suy nghĩ, thảo luận và kết nối cộng đồng.</p>
+                    <a href="https://www.threads.net/@hiupab479" target="_blank" class="inline-flex items-center gap-1 px-5 py-2 bg-black text-white rounded-full font-medium text-sm hover:bg-gray-800 transition-colors">
+                        <img src="https://www.edigitalagency.com.au/wp-content/uploads/Threads-app-logo-white-png-transparent.png" alt="Threads" class="w-4 h-4">
+                        Theo dõi
+                    </a>
+                </div>
+            </div>
+             <div id="discord-card" data-discord-id="heiu479" class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50 cursor-pointer group">
+                <div class="h-48 bg-gradient-to-br from-indigo-500/10 to-indigo-700/10 flex items-center justify-center relative">
+                    <i class="fab fa-discord text-6xl text-gradient bg-gradient-to-r from-[#5865F2] to-[#7289DA] bg-clip-text text-transparent"></i>
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-[#5865F2] shadow-sm">DISCORD</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Discord</h3>
+                    <p class="text-gray-600 text-sm mb-4">Kết nối cộng đồng, trò chuyện, chia sẻ đam mê.</p>
+                    <div class="inline-flex items-center px-5 py-2 bg-[#5865F2] text-white rounded-full font-medium text-sm transition-colors group-hover:bg-[#4752C4]">
+                        <i class="fab fa-discord mr-1"></i>
+                        <span id="discord-id-text">heiu479</span>
+                        <i id="copy-icon" class="fas fa-copy ml-2 text-xs opacity-70 transition-all group-hover:opacity-100"></i>
+                    </div>
+                     <span id="copy-feedback-discord" class="text-xs text-green-600 ml-2 opacity-0 transition-opacity duration-300">Đã sao chép!</span>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-orange-500/10 to-orange-700/10 flex items-center justify-center relative">
+                    <i class="fab fa-soundcloud text-6xl text-gradient bg-gradient-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent"></i>
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-orange-500 shadow-sm">SOUNDCLOUD</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">SoundCloud</h3>
+                    <p class="text-gray-600 text-sm mb-4">Chia sẻ âm nhạc, bản thử nghiệm, sản phẩm âm thanh.</p>
+                    <a href="https://soundcloud.com/tolahieu479" target="_blank" class="inline-block px-5 py-2 bg-orange-500 text-white rounded-full font-medium text-sm hover:bg-orange-600 transition-colors">
+                        <i class="fab fa-soundcloud mr-1"></i> Theo dõi
+                    </a>
+                </div>
+            </div>
+             <div class="bg-white rounded-2xl overflow-hidden card-hover border border-gray-100/50">
+                <div class="h-48 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-yellow-500/10 flex items-center justify-center relative">
+                    <i class="fab fa-instagram text-6xl text-gradient bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] bg-clip-text text-transparent"></i>
+                    <div class="absolute bottom-3 right-3 bg-white px-2 py-0.5 rounded-full text-xs font-bold text-pink-600 shadow-sm">INSTAGRAM</div>
+                </div>
+                <div class="p-5">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Instagram</h3>
+                    <p class="text-gray-600 text-sm mb-4">Khoảnh khắc đẹp, du lịch và sở thích cá nhân.</p>
+                    <a href="https://www.instagram.com/hiupab479" target="_blank" class="inline-block px-5 py-2 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-medium text-sm hover:opacity-90 transition-opacity">
+                        <i class="fab fa-instagram mr-1"></i> Theo dõi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="style" class="py-16 md:py-20 bg-gradient-to-br from-electric/5 to-violet/5 rounded-t-3xl mt-10">
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Phong cách <span class="gradient-text">cá nhân</span></h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                Những yếu tố định hình nên con người và phong cách làm việc của tôi.
+            </p>
+            <div class="w-20 md:w-24 h-2 bg-gradient-to-r from-neonpink to-violet mx-auto mt-6 rounded-full"></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                <div class="w-16 h-16 bg-gradient-to-r from-neonpink to-violet rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-lightbulb text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Sáng tạo</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Luôn tìm kiếm giải pháp mới và cách tiếp cận độc đáo.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-neonpink/10 text-neonpink rounded-full text-xs font-medium personal-style-tag">Tư duy đột phá</span>
+                    <span class="px-3 py-1 bg-violet/10 text-violet rounded-full text-xs font-medium personal-style-tag">Giải pháp</span>
+                </div>
+            </div>
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                 <div class="w-16 h-16 bg-gradient-to-r from-lime to-electric rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-users text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Hợp tác</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Tin vào sức mạnh làm việc nhóm và kết hợp quan điểm.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-lime/10 text-lime-600 rounded-full text-xs font-medium personal-style-tag">Làm việc nhóm</span>
+                    <span class="px-3 py-1 bg-electric/10 text-cyan-600 rounded-full text-xs font-medium personal-style-tag">Giao tiếp</span>
+                </div>
+            </div>
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                 <div class="w-16 h-16 bg-gradient-to-r from-sunshine to-neonpink rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-bolt text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Năng động</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Tràn đầy năng lượng và nhiệt huyết trong mọi dự án.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-yellow-400/10 text-yellow-600 rounded-full text-xs font-medium personal-style-tag">Nhiệt huyết</span>
+                    <span class="px-3 py-1 bg-neonpink/10 text-neonpink rounded-full text-xs font-medium personal-style-tag">Tích cực</span>
+                </div>
+            </div>
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                 <div class="w-16 h-16 bg-gradient-to-r from-violet to-electric rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-search text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Tò mò</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Không ngừng học hỏi và khám phá lĩnh vực mới.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-violet/10 text-violet rounded-full text-xs font-medium personal-style-tag">Học hỏi</span>
+                    <span class="px-3 py-1 bg-electric/10 text-cyan-600 rounded-full text-xs font-medium personal-style-tag">Khám phá</span>
+                </div>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                 <div class="w-16 h-16 bg-gradient-to-r from-neonpink to-lime rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-heart text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Đam mê</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Theo đuổi mọi thứ với tất cả nhiệt huyết và cống hiến.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-neonpink/10 text-neonpink rounded-full text-xs font-medium personal-style-tag">Nhiệt tình</span>
+                    <span class="px-3 py-1 bg-lime/10 text-lime-600 rounded-full text-xs font-medium personal-style-tag">Cống hiến</span>
+                </div>
+            </div>
+             <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg transform transition-all hover:scale-[1.03] hover:shadow-xl">
+                 <div class="w-16 h-16 bg-gradient-to-r from-electric to-violet rounded-full flex items-center justify-center mx-auto mb-4 md:mb-5 shadow-md">
+                    <i class="fas fa-balance-scale text-white text-xl md:text-2xl"></i>
+                </div>
+                <h3 class="text-lg md:text-xl font-bold text-center text-gray-800 mb-2 md:mb-3">Cân bằng</h3>
+                <p class="text-gray-600 text-sm text-center mb-4 md:mb-5">Tìm kiếm cân bằng công việc và cuộc sống.</p>
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <span class="px-3 py-1 bg-electric/10 text-cyan-600 rounded-full text-xs font-medium personal-style-tag">Work-life</span>
+                    <span class="px-3 py-1 bg-violet/10 text-violet rounded-full text-xs font-medium personal-style-tag">Sức khỏe</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <section id="contact" class="py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="relative main-content-block bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div class="flex flex-col lg:flex-row">
+                <div class="lg:w-2/5 p-6 md:p-10 lg:p-12 bg-gradient-to-br from-electric/5 to-violet/5">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+                        Thông tin <span class="gradient-text">liên hệ</span>
+                    </h2>
+                    <p class="text-base lg:text-lg text-gray-600 mb-8">
+                        Bạn muốn hợp tác, có câu hỏi hay đơn giản chỉ muốn trò chuyện? Hãy liên hệ với tôi.
+                    </p>
+                    <div class="space-y-5 md:space-y-6">
+                         <div class="flex items-center group">
+                             <div class="w-10 h-10 rounded-full bg-gradient-to-r from-neonpink to-violet flex items-center justify-center mr-4 text-white transition-transform group-hover:scale-110 flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Email</h4>
+                                <a href="mailto:gaminghieu3@gmail.com" class="text-sm sm:text-base lg:text-lg font-medium text-gray-700 hover:text-violet transition-colors break-all">gaminghieu3@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center group">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-lime to-electric flex items-center justify-center mr-4 text-white transition-transform group-hover:scale-110 flex-shrink-0">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Điện thoại</h4>
+                                <a href="tel:+84383948780" class="text-sm sm:text-base lg:text-lg font-medium text-gray-700 hover:text-lime-600 transition-colors">+84 383 948 780</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center group">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-sunshine to-neonpink flex items-center justify-center mr-4 text-white transition-transform group-hover:scale-110 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Địa chỉ</h4>
+                                <p class="text-sm sm:text-base lg:text-lg font-medium text-gray-700">Lâm Đồng, Việt Nam</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="mt-8 md:mt-10">
+                        <h4 class="text-sm font-medium text-gray-500 mb-3">Giờ làm việc</h4>
+                        <div class="bg-white/60 p-3 md:p-4 rounded-lg border border-gray-200 text-xs sm:text-sm">
+                            <div class="flex justify-between py-1.5 border-b border-gray-100">
+                                <span class="text-gray-600">Thứ 2 - Thứ 6</span>
+                                <span class="font-medium text-gray-800">7:00 - 18:00</span>
+                            </div>
+                            <div class="flex justify-between py-1.5">
+                                <span class="text-gray-600">Thứ 7 - Chủ nhật</span>
+                                <span class="font-medium text-green-600">Online</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-3/5 p-6 md:p-10 lg:p-12">
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-800 mb-6">Gửi tin nhắn cho tôi</h3>
+                    <form class="space-y-4 md:space-y-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+                             <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet/50 focus:border-violet transition-all text-sm" placeholder="Tên của bạn">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email <span class="text-red-500">*</span></label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet/50 focus:border-violet transition-all text-sm" placeholder="Địa chỉ email">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề</label>
+                            <input type="text" id="subject" name="subject" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet/50 focus:border-violet transition-all text-sm" placeholder="Tiêu đề tin nhắn">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Nội dung <span class="text-red-500">*</span></label>
+                            <textarea id="message" name="message" rows="4" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet/50 focus:border-violet transition-all text-sm" placeholder="Nội dung bạn muốn gửi..."></textarea>
+                        </div>
+                        <div>
+                             <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-neonpink to-violet text-white rounded-lg font-bold shadow-md hover:shadow-lg transition-all transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet text-sm">
+                                <i class="fas fa-paper-plane mr-2"></i> Gửi tin nhắn
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 mt-10">
+         <div class="max-w-7xl mx-auto">
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 md:mb-12 items-center">
+                 <div class="md:col-span-1 text-center md:text-left">
+                    <span class="text-2xl md:text-3xl font-bold gradient-text">NGÔ NGUYỄN ĐỨC HIẾU</span>
+                    <p class="text-gray-400 text-sm mt-2 max-w-md mx-auto md:mx-0">
+                        Một Gen Z đam mê sáng tạo, luôn tìm kiếm thách thức mới để phát triển bản thân.
+                    </p>
+                </div>
+                <div class="md:col-span-2 flex justify-center md:justify-end space-x-3 sm:space-x-4">
+                     <a href="https://www.facebook.com/imhieu207" target="_blank" title="Facebook" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-blue-600 hover:text-white transition-colors">
+                        <i class="fab fa-facebook-f text-base sm:text-lg"></i>
+                    </a>
+                     <a href="https://www.instagram.com/hiupab479" target="_blank" title="Instagram" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-gradient-to-r from-pink-500 to-purple-500 hover:text-white transition-colors">
+                        <i class="fab fa-instagram text-base sm:text-lg"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@hg.1019532" target="_blank" title="TikTok" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-black hover:text-white transition-colors">
+                        <i class="fab fa-tiktok text-base sm:text-lg"></i>
+                    </a>
+                    <a href="https://soundcloud.com/tolahieu479" target="_blank" title="SoundCloud" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-orange-500 hover:text-white transition-colors">
+                        <i class="fab fa-soundcloud text-base sm:text-lg"></i>
+                    </a>
+                    <a href="mailto:gaminghieu3@gmail.com" title="Email" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-gray-400 hover:bg-red-500 hover:text-white transition-colors">
+                        <i class="fas fa-envelope text-base sm:text-lg"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700/50 pt-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <p class="text-gray-500 text-xs sm:text-sm mb-4 md:mb-0">
+                    © <span id="current-year">2024</span> Ngô Nguyễn Đức Hiếu. Bảo lưu mọi quyền.
+                </p>
+                <div class="flex flex-wrap justify-center gap-x-4 gap-y-1">
+                    <a href="#about-section" class="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Giới thiệu</a>
+                    <a href="#social" class="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Mạng xã hội</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Liên hệ</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        function createConfetti() {
+            const colors = ['#FF6EC7', '#8A2BE2', '#7DF9FF', '#CCFF00', '#FFDE59'];
+            const container = document.getElementById('confetti-container');
+            if (!container) return;
+            const confettiCount = window.innerWidth < 768 ? 15 : 30;
+            container.innerHTML = '';
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                confetti.style.animationDelay = (Math.random() * 5) + 's';
+                const size = Math.random() * 6 + 4;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                confetti.style.opacity = Math.random() * 0.4 + 0.5;
+                confetti.classList.add('animate-confetti');
+                confetti.addEventListener('animationend', () => confetti.remove());
+                container.appendChild(confetti);
+            }
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const hrefAttribute = this.getAttribute('href');
+                if (hrefAttribute && hrefAttribute.startsWith('#') && hrefAttribute.length > 1) {
+                    const targetElement = document.querySelector(hrefAttribute);
+                    if (targetElement) {
+                        e.preventDefault();
+                        const navHeight = document.querySelector('nav')?.offsetHeight || 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                        const offsetPosition = elementPosition - navHeight - 16;
+
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+                        const mobileMenu = document.getElementById('mobile-menu');
+                        const mobileMenuButton = document.getElementById('mobile-menu-button');
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                             mobileMenu.classList.remove('open');
+                             mobileMenu.classList.add('hidden');
+                             mobileMenu.style.maxHeight = '0';
+                            mobileMenuButton?.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                }
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.classList.add('animate-fadeIn');
+                    // Optional: Unobserve after first animation
+                     // observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.05 }); // Trigger even earlier
+
+        document.querySelectorAll('section > div.main-content-block, section#social .card-hover, section#style .bg-white, #about > div.flex').forEach(el => {
+             el.style.opacity = '0';
+             observer.observe(el);
+        });
+
+        const discordCard = document.getElementById('discord-card');
+        if (discordCard) {
+            const discordId = discordCard.getAttribute('data-discord-id');
+            const copyIconElement = document.getElementById('copy-icon');
+            const feedbackElement = document.getElementById('copy-feedback-discord');
+
+            discordCard.addEventListener('click', function(event) {
+                event.preventDefault();
+                if (!navigator.clipboard) {
+                    alert('Trình duyệt không hỗ trợ sao chép. Vui lòng sao chép thủ công: ' + discordId);
+                    return;
+                }
+                navigator.clipboard.writeText(discordId).then(() => {
+                    copyIconElement.classList.remove('fa-copy');
+                    copyIconElement.classList.add('fa-check');
+                    copyIconElement.style.color = '#4ade80';
+                    feedbackElement.style.opacity = '1';
+
+                    setTimeout(() => {
+                        copyIconElement.classList.remove('fa-check');
+                        copyIconElement.classList.add('fa-copy');
+                        copyIconElement.style.color = '';
+                        feedbackElement.style.opacity = '0';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Không thể sao chép ID Discord: ', err);
+                    alert('Lỗi! Không thể sao chép ID.');
+                });
+            });
+        }
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                 const isOpen = mobileMenu.classList.contains('open');
+                 if (isOpen) {
+                     mobileMenu.classList.remove('open');
+                      mobileMenu.style.maxHeight = '0'; // Collapse
+                     // Add hidden after transition ends for accessibility
+                     setTimeout(() => {
+                        if (!mobileMenu.classList.contains('open')) { // Double check state
+                           mobileMenu.classList.add('hidden');
+                        }
+                     }, 300); // Match transition duration
+                 } else {
+                     mobileMenu.classList.remove('hidden'); // Remove hidden first
+                     // Wait a tick for display: block to apply before calculating scrollHeight
+                     requestAnimationFrame(() => {
+                         mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px'; // Expand
+                         mobileMenu.classList.add('open');
+                     });
+                 }
+                 mobileMenuButton.setAttribute('aria-expanded', !isOpen);
+            });
+        }
+
+         function debounce(func, wait) {
+           let timeout;
+           return function executedFunction(...args) {
+             const later = () => {
+               clearTimeout(timeout);
+               func(...args);
+             };
+             clearTimeout(timeout);
+             timeout = setTimeout(later, wait);
+           };
+         }
+         const debouncedCreateConfetti = debounce(createConfetti, 300);
+
+        window.addEventListener('load', createConfetti);
+        window.addEventListener('resize', debouncedCreateConfetti);
+
+    </script>
+</body>
+</html>
